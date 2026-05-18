@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#020209">
+<title>Paris Mobile 2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#020209;--bg1:#05050f;--bg2:#090918;--bg3:#0e0e22;--card:#07071a;
+  --b:rgba(255,255,255,.05);--b2:rgba(255,255,255,.09);
+  --t:#f0f0ff;--t2:#7070b0;--t3:#383860;
+  --a:#4f8bff;--a2:#6644ff;--live:#ff2d55;--win:#00e87a;--warn:#ffaa00;--pu:#9955ff;--coins:#ffaa00;
+  --glow:rgba(79,139,255,.2);--r:12px;--r2:16px;--r3:22px;
+}
+[data-theme=light]{--bg:#f2f3fc;--bg1:#eaebf8;--bg2:#fff;--bg3:#fff;--card:#fff;--b:rgba(0,0,0,.05);--b2:rgba(0,0,0,.09);--t:#04041a;--t2:#4040a0;--t3:#a0a0d0;}
+*,::before,::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:'Manrope',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:0;height:0}
+
+/* ONBOARDING */
+#ob{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+.o1{width:320px;height:320px;background:rgba(79,139,255,.12);top:-80px;left:-80px;animation:oF 8s ease-in-out infinite}
+.o2{width:280px;height:280px;background:rgba(153,85,255,.1);bottom:-60px;right:-60px;animation:oF 10s ease-in-out infinite reverse}
+@keyframes oF{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,14px)}}
+.ob-step{display:none;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:340px;animation:fU .35s ease;position:relative;z-index:1}
+.ob-step.on{display:flex}
+@keyframes fU{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.ob-logo{width:78px;height:78px;border-radius:20px;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;margin-bottom:18px;box-shadow:0 0 60px rgba(79,139,255,.4);animation:lP 2.5s ease-in-out infinite}
+@keyframes lP{0%,100%{box-shadow:0 0 40px rgba(79,139,255,.3)}50%{box-shadow:0 0 80px rgba(79,139,255,.6)}}
+.ob-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,#fff,#a0b8ff,#c080ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px}
+.ob-sub{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:6px}
+.ob-tag{font-size:11px;color:var(--t3);font-style:italic;margin-bottom:28px}
+.ob-dots{display:flex;gap:5px;margin-bottom:20px}
+.od{width:6px;height:6px;border-radius:50%;background:var(--t3);transition:.3s}
+.od.on{background:var(--a);width:18px;border-radius:99px}
+.ob-btn{width:100%;padding:13px;border-radius:var(--r2);background:linear-gradient(135deg,#4f8bff,#9955ff);border:none;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;box-shadow:0 4px 20px var(--glow)}
+.ob-btn:active{transform:scale(.97)}
+.ob-wallet{background:linear-gradient(135deg,rgba(79,139,255,.1),rgba(153,85,255,.07));border:1px solid rgba(79,139,255,.18);border-radius:var(--r2);padding:18px;margin-bottom:22px;width:100%}
+.ow-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.ow-amt{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:var(--coins)}
+.ow-sub{font-size:10px;color:var(--t2);margin-top:3px}
+.auth-tabs{display:flex;background:var(--bg2);border-radius:var(--r);padding:3px;margin-bottom:14px;gap:3px;width:100%}
+.at{flex:1;padding:7px;text-align:center;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer;color:var(--t2);transition:.2s}
+.at.on{background:var(--a);color:#fff}
+.af{margin-bottom:10px;text-align:left;width:100%}
+.al{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:4px;display:block}
+.ai{width:100%;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t);border-radius:var(--r);padding:11px 13px;font-family:'Manrope',sans-serif;font-size:14px;outline:none;transition:.2s}
+.ai:focus{border-color:var(--a)}
+.auth-err{font-size:11px;color:var(--live);margin-top:5px;text-align:center;min-height:15px}
+.adiv{display:flex;align-items:center;gap:7px;margin:10px 0;width:100%}
+.adiv-l{flex:1;height:1px;background:var(--b2)}
+.adiv-t{font-size:9px;color:var(--t3);font-weight:700}
+.gbtn{width:100%;padding:10px;border-radius:var(--r);background:var(--bg2);border:1.5px solid var(--b2);color:var(--t);font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.gbtn:active{transform:scale(.97)}
+
+/* APP */
+#app{display:none;height:100dvh;flex-direction:column}
+#app.on{display:flex}
+.topbar{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:11px 14px 8px;background:var(--bg);border-bottom:1px solid var(--b);position:relative;z-index:10}
+.topbar::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(79,139,255,.3),transparent)}
+.tb-l{display:flex;align-items:center;gap:7px}
+.tb-logo{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.tb-name{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;background:linear-gradient(135deg,#fff,#a0b8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tb-r{display:flex;align-items:center;gap:5px}
+.cp{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--b2);padding:4px 9px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--coins)}
+.tbtn{width:28px;height:28px;border-radius:7px;background:var(--bg2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:12px;transition:.2s}
+.tbtn:active{transform:scale(.88)}
+.avb{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;cursor:pointer;border:2px solid rgba(79,139,255,.3)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.sec{display:none;animation:sI .2s ease;padding-bottom:4px}
+.sec.on{display:block}
+@keyframes sI{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.nav{flex-shrink:0;display:flex;background:var(--bg);border-top:1px solid var(--b);padding-bottom:env(safe-area-inset-bottom,0)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 4px 9px;cursor:pointer;position:relative;transition:.15s}
+.ni:active{transform:scale(.88)}
+.ni i{font-size:16px;color:var(--t3);transition:.2s}
+.ni span{font-size:8px;font-weight:700;letter-spacing:.4px;color:var(--t3);text-transform:uppercase;transition:.2s}
+.ni.on i,.ni.on span{color:var(--a)}
+.ni.on::after{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:linear-gradient(90deg,transparent,var(--a),transparent);border-radius:99px}
+.ni-dot{position:absolute;top:4px;right:calc(50% - 15px);min-width:13px;height:13px;border-radius:99px;background:var(--live);color:#fff;font-size:7px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 3px}
+.sk{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200%;animation:sh 1.5s infinite;border-radius:8px}
+@keyframes sh{0%{background-position:200%}100%{background-position:-200%}}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:9px;font-weight:700}
+.bl{background:rgba(255,45,85,.12);color:var(--live);border:1px solid rgba(255,45,85,.22)}
+.bf{background:rgba(56,56,96,.28);color:var(--t3);border:1px solid var(--b)}
+.bs{background:rgba(79,139,255,.1);color:var(--a);border:1px solid rgba(79,139,255,.18)}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--live);animation:lb 1.2s ease-in-out infinite;display:inline-block}
+@keyframes lb{0%,100%{opacity:1}50%{opacity:.2}}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:4px 13px 8px}
+.ph-t{font-family:'Syne',sans-serif;font-weight:700;font-size:14px}
+.ph-a{font-size:10px;font-weight:700;color:var(--a);cursor:pointer;display:flex;align-items:center;gap:3px}
+.btn-main{width:100%;padding:12px;border-radius:var(--r2);background:linear-gradient(135deg,#4f8bff,#9955ff);border:none;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 18px var(--glow)}
+.btn-main:active{transform:scale(.97)}
+.hero{margin:12px 12px 0;border-radius:var(--r3);background:linear-gradient(135deg,#08122a,#080820);border:1px solid rgba(79,139,255,.1);padding:15px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(79,139,255,.08),transparent 70%)}
+.hero-g{font-size:9px;color:var(--t3);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.hero-n{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-bottom:10px;position:relative;z-index:1}
+.hero-n span{color:var(--a)}
+.hstats{display:flex;gap:13px;position:relative;z-index:1}
+.hs{text-align:center}
+.hs-v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--a)}
+.hs-l{font-size:8px;font-weight:700;letter-spacing:1px;color:var(--t3);text-transform:uppercase}
+.ticker{margin:9px 12px;background:var(--card);border:1px solid var(--b);border-radius:10px;padding:7px 11px;overflow:hidden;display:flex;align-items:center;gap:7px}
+.ticker i{color:var(--win);font-size:9px;flex-shrink:0}
+.ticker-txt{white-space:nowrap;font-size:10px;font-weight:600;color:var(--t2);animation:tA 25s linear infinite}
+@keyframes tA{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ftabs{display:flex;gap:5px;padding:8px 12px;overflow-x:auto}
+.ftab{flex-shrink:0;padding:5px 10px;border-radius:99px;font-size:9px;font-weight:700;cursor:pointer;background:var(--bg2);border:1px solid var(--b);color:var(--t2);transition:.2s;display:flex;align-items:center;gap:3px}
+.ftab.on{background:var(--a);border-color:var(--a);color:#fff}
+.ftab:active{transform:scale(.93)}
+.mc{margin:0 12px 8px;background:var(--card);border:1px solid var(--b);border-radius:var(--r2);overflow:hidden;position:relative;transition:.18s}
+.mc:active{transform:scale(.985)}
+.mc.live{border-color:rgba(255,45,85,.18)}
+.mc-bar{position:absolute;left:0;top:0;bottom:0;width:2.5px;background:linear-gradient(180deg,var(--a),var(--pu))}
+.mc.live .mc-bar{background:linear-gradient(180deg,var(--live),#ff7a3d)}
+.mc-in{padding:10px 11px 10px 14px}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.mc-comp{font-size:9px;font-weight:700;color:var(--t3)}
+.mc-teams{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.team{display:flex;align-items:center;gap:5px;flex:1;min-width:0}
+.team.away{flex-direction:row-reverse}
+.crest{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:var(--bg2);border:1px solid var(--b);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.crest img{width:19px;height:19px;object-fit:contain}
+.tname{font-size:11px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:78px}
+.team.away .tname{text-align:right}
+.sbox{flex-shrink:0;text-align:center}
+.score{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700}
+.score.live{color:var(--live)}
+.vs{font-family:'Syne',sans-serif;font-size:11px;color:var(--t3);font-weight:700}
+.mkts{display:flex;gap:3px;overflow-x:auto;margin-bottom:6px}
+.mkts::-webkit-scrollbar{height:0}
+.mkt{flex-shrink:0;padding:2px 7px;border-radius:6px;font-size:8px;font-weight:700;cursor:pointer;background:var(--bg2);border:1px solid var(--b);color:var(--t3);transition:.15s}
+.mkt.on{background:rgba(153,85,255,.16);border-color:rgba(153,85,255,.32);color:#cc88ff}
+.odds{display:flex;gap:4px}
+.ob{flex:1;padding:6px 3px;border-radius:8px;background:var(--bg2);border:1px solid var(--b);cursor:pointer;text-align:center;position:relative;overflow:hidden;transition:.15s}
+.ob::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--a),var(--pu));opacity:0;transition:.15s}
+.ob:active{transform:scale(.92)}
+.ob.sel{border-color:var(--a)}
+.ob.sel::before{opacity:1}
+.ob.sel .ol,.ob.sel .ov{color:#fff;position:relative;z-index:1}
+.ol{display:block;font-size:8px;color:var(--t3);font-weight:700;margin-bottom:1px;position:relative;z-index:1}
+.ov{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--t);position:relative;z-index:1}
+.cd{position:absolute;inset:0;z-index:20;background:rgba(2,2,9,.87);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3);border-radius:var(--r2)}
+.slip-hdr{margin:12px 12px 8px;background:linear-gradient(135deg,rgba(153,85,255,.09),rgba(79,139,255,.06));border:1px solid rgba(153,85,255,.15);border-radius:var(--r3);padding:12px;display:flex;align-items:center;gap:8px}
+.slip-ico{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0}
+.slip-cnt{margin-left:auto;width:28px;height:28px;border-radius:7px;background:rgba(79,139,255,.12);border:1px solid rgba(79,139,255,.24);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--a);flex-shrink:0}
+.sitem{margin:0 12px 6px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:8px 10px;display:flex;align-items:center;gap:7px;animation:siI .2s ease}
+@keyframes siI{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+.si-bar{width:2.5px;align-self:stretch;border-radius:99px;background:linear-gradient(180deg,var(--a),var(--pu));flex-shrink:0}
+.si-info{flex:1;min-width:0}
+.si-m{font-size:11px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.si-p{font-size:9px;color:var(--t2);margin-top:1px}
+.si-o{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--warn);flex-shrink:0}
+.si-del{width:22px;height:22px;border-radius:6px;flex-shrink:0;background:rgba(255,45,85,.09);border:1px solid rgba(255,45,85,.16);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--live);font-size:10px}
+.si-del:active{transform:scale(.85)}
+.pbox{margin:0 12px 10px;background:var(--card);border:1px solid var(--b);border-radius:var(--r3);padding:12px}
+.pb-l{font-size:8px;font-weight:800;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:5px}
+.stake-row{display:flex;align-items:center;gap:5px;margin-bottom:7px}
+.stake-inp{flex:1;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t);border-radius:var(--r);padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;transition:.2s}
+.stake-inp:focus{border-color:var(--a)}
+.stake-u{flex-shrink:0;padding:5px 7px;border-radius:7px;background:rgba(255,170,0,.09);border:1px solid rgba(255,170,0,.16);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--coins)}
+.qss{display:flex;gap:4px;margin-bottom:8px}
+.qs{flex:1;padding:5px 3px;text-align:center;cursor:pointer;background:var(--bg2);border:1px solid var(--b);border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--t2);transition:.15s}
+.qs:active{background:var(--a);color:#fff;border-color:var(--a);transform:scale(.92)}
+.pot{display:flex;justify-content:space-between;align-items:center;padding:7px 9px;background:rgba(0,232,122,.06);border:1px solid rgba(0,232,122,.11);border-radius:8px;margin-bottom:10px}
+.pot-l{font-size:10px;color:var(--t2);font-weight:600}
+.pot-v{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--win)}
+.empty{padding:40px 20px;text-align:center}
+.empty i{font-size:38px;color:var(--t3);margin-bottom:10px;display:block}
+.empty-t{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px}
+.empty-s{font-size:11px;color:var(--t2);line-height:1.6}
+.rank-hero{margin:12px 12px 10px;background:linear-gradient(135deg,rgba(255,170,0,.07),rgba(255,45,85,.04));border:1px solid rgba(255,170,0,.11);border-radius:var(--r3);padding:14px;text-align:center}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:5px;padding:11px 12px 6px}
+.pod{text-align:center;flex:1;display:flex;flex-direction:column;align-items:center}
+.pod-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;margin:0 auto 4px;border:2px solid var(--b);background:var(--bg2);color:#fff}
+.pod:nth-child(2) .pod-av{width:56px;height:56px;font-size:22px;background:linear-gradient(135deg,#ffd700,#b8860b);border-color:#ffd700;box-shadow:0 4px 18px rgba(255,215,0,.22)}
+.pod:nth-child(1) .pod-av{background:linear-gradient(135deg,#c0c0c0,#888);border-color:#c0c0c0}
+.pod:nth-child(3) .pod-av{background:linear-gradient(135deg,#cd7f32,#7a4a1e);border-color:#cd7f32}
+.pod-name{font-size:9px;font-weight:700}
+.pod-coins{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--coins)}
+.rank-list{padding:0 12px;display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.ri{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:8px 10px}
+.ri.me{border-color:rgba(79,139,255,.22);background:rgba(79,139,255,.04)}
+.ri-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--t3);width:17px;flex-shrink:0}
+.ri-av{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.ri-info{flex:1;min-width:0}
+.ri-name{font-size:11px;font-weight:700}
+.ri-sub{font-size:8px;color:var(--t3);margin-top:1px}
+.ri-score{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--coins);flex-shrink:0}
+.feed{padding:0 12px;margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+.fi{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);padding:7px 9px}
+.fi-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.fi-txt{font-size:9px;flex:1;line-height:1.4}
+.fi-amt{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;flex-shrink:0}
+.fi-amt.w{color:var(--win)}
+.fi-amt.l{color:var(--live)}
+.games-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 12px;margin-bottom:12px}
+.gtile{background:var(--card);border:1px solid var(--b);border-radius:var(--r2);padding:13px;text-align:center;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
+.gtile::before{content:'';position:absolute;inset:0;background:var(--tg);opacity:.06;transition:.2s}
+.gtile:active{transform:scale(.95)}
+.gt-ico{font-size:26px;color:var(--t2);display:block;margin-bottom:5px}
+.gt-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-bottom:2px}
+.gt-desc{font-size:9px;color:var(--t2);line-height:1.4}
+.gt-tag{display:inline-block;margin-top:5px;padding:2px 6px;background:rgba(79,139,255,.09);border:1px solid rgba(79,139,255,.16);border-radius:99px;font-size:8px;font-weight:700;color:var(--a)}
+.gt-on{position:absolute;top:6px;right:6px;background:rgba(0,232,122,.12);border:1px solid rgba(0,232,122,.22);border-radius:99px;padding:1px 5px;font-size:7px;font-weight:700;color:var(--win);display:flex;align-items:center;gap:2px}
+.shop-hero{margin:12px 12px 9px;background:var(--card);border:1px solid var(--b);border-radius:var(--r3);padding:14px;text-align:center}
+.shop-coins{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--coins)}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 12px;margin-bottom:12px}
+.si2{background:var(--card);border:1px solid var(--b);border-radius:var(--r2);padding:12px;text-align:center;cursor:pointer;transition:.18s}
+.si2:active{transform:scale(.95);border-color:var(--a)}
+.si2 i{font-size:22px;color:var(--t2);display:block;margin-bottom:5px}
+.si2-n{font-size:10px;font-weight:800;margin-bottom:2px}
+.si2-d{font-size:9px;color:var(--t2);line-height:1.4;margin-bottom:6px}
+.si2-p{display:inline-flex;align-items:center;gap:2px;background:rgba(255,170,0,.09);border:1px solid rgba(255,170,0,.15);padding:2px 7px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--coins)}
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);z-index:500;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .23s}
+.mov.on{opacity:1;pointer-events:all}
+.msheet{width:100%;background:var(--bg1);border-radius:22px 22px 0 0;padding:0;max-height:94dvh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.mov.on .msheet{transform:translateY(0)}
+.mhdr{display:flex;align-items:center;justify-content:space-between;padding:15px 14px 11px;border-bottom:1px solid var(--b);position:sticky;top:0;background:var(--bg1);z-index:5}
+.mhandle{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:28px;height:3px;background:var(--b2);border-radius:99px}
+.mtitle{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;margin-top:7px}
+.mclose{width:26px;height:26px;border-radius:6px;background:var(--bg2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:11px;margin-top:7px}
+.mclose:active{transform:scale(.88)}
+.mbody{padding:12px}
+.pig{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.pig-item{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--b);border-radius:99px;padding:3px 7px}
+.pig-av{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0}
+.pig-name{font-size:9px;font-weight:700}
+.pig-c{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--coins)}
+/* AVIATOR */
+.av-disp{background:var(--bg);border:1px solid var(--b);border-radius:var(--r2);padding:13px;margin-bottom:9px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.av-canvas{width:100%;height:70px;margin-bottom:5px}
+.av-mult{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1;transition:color .3s}
+.av-mult.safe{color:var(--win)}
+.av-mult.warn{color:var(--warn)}
+.av-mult.hot{color:var(--live)}
+.av-mult.crashed{color:var(--live);animation:csh .4s ease}
+@keyframes csh{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.av-st{font-size:10px;color:var(--t2);font-weight:600;margin-top:3px}
+.av-hist{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:9px}
+.avhp{padding:2px 6px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700}
+.avhp.lo{background:rgba(255,45,85,.12);color:var(--live)}
+.avhp.mi{background:rgba(255,170,0,.12);color:var(--warn)}
+.avhp.hi{background:rgba(0,232,122,.12);color:var(--win)}
+.gs-row{display:flex;align-items:center;gap:5px;margin-bottom:8px}
+.gs-inp{flex:1;background:var(--bg2);border:1.5px solid var(--b2);color:var(--t);border-radius:var(--r);padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:.2s}
+.gs-inp:focus{border-color:var(--a)}
+.gs-u{flex-shrink:0;padding:6px 7px;border-radius:7px;background:rgba(255,170,0,.09);border:1px solid rgba(255,170,0,.16);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--coins)}
+.flx{display:flex;gap:6px}
+.btn-g{flex:1;padding:9px;border-radius:var(--r);background:rgba(0,232,122,.11);border:1px solid rgba(0,232,122,.22);color:var(--win);font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
+.btn-g:active{transform:scale(.96)}
+.btn-r{flex:1;padding:9px;border-radius:var(--r);background:rgba(255,45,85,.11);border:1px solid rgba(255,45,85,.22);color:var(--live);font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:.15s}
+.btn-r:active{transform:scale(.96)}
+/* PAIR IMPAIR */
+.pi-arena{background:var(--bg);border:1px solid var(--b);border-radius:var(--r2);padding:14px;margin-bottom:9px;text-align:center;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pi-teams{display:flex;align-items:center;gap:10px;margin-bottom:10px;width:100%}
+.pi-team{flex:1;background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:9px;text-align:center;transition:.3s}
+.pi-team.winning{border-color:var(--win);background:rgba(0,232,122,.07)}
+.pi-team.losing{border-color:var(--live);background:rgba(255,45,85,.07)}
+.pi-tn{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-bottom:3px}
+.pi-ts{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--a)}
+.pi-vs{font-family:'Syne',sans-serif;font-size:12px;color:var(--t3);font-weight:700;flex-shrink:0}
+.pi-res{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;min-height:40px;transition:color .3s}
+.pi-res.pair{color:var(--win)}
+.pi-res.impair{color:var(--warn)}
+.pi-res.nul{color:var(--a)}
+.pi-res.wait{color:var(--t3);font-size:12px;font-family:'Manrope',sans-serif}
+.pi-st{font-size:10px;color:var(--t2);margin-top:3px;font-weight:600}
+.pi-choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:8px}
+.pic{padding:9px 5px;border-radius:var(--r);background:var(--bg2);border:2px solid var(--b);cursor:pointer;text-align:center;transition:.18s}
+.pic:active{transform:scale(.92)}
+.pic.sel{border-color:var(--a);background:rgba(79,139,255,.11)}
+.pic.sel .pc-n{color:var(--a)}
+.pic.correct{border-color:var(--win);background:rgba(0,232,122,.09);animation:cP .5s ease}
+.pic.wrong{border-color:var(--live);background:rgba(255,45,85,.09)}
+@keyframes cP{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+.pc-i{font-size:16px;margin-bottom:3px;display:block}
+.pc-n{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--t2);transition:.2s}
+.pc-o{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--coins);font-weight:700}
+.pi-hist{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px}
+.pihp{padding:2px 6px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700}
+.pihp.pair{background:rgba(0,232,122,.12);color:var(--win)}
+.pihp.impair{background:rgba(255,170,0,.12);color:var(--warn)}
+.pihp.nul{background:rgba(79,139,255,.12);color:var(--a)}
+.pi-lb{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:9px;margin-bottom:9px}
+.pi-lb-t{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.pi-lb-i{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--b)}
+.pi-lb-i:last-child{border-bottom:none}
+.pi-lb-av{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0}
+.pi-lb-n{font-size:9px;font-weight:700;flex:1}
+.pi-lb-g{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--win)}
+/* APPLE */
+.apple-disp{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:9px 11px;background:var(--bg2);border:1px solid var(--b);border-radius:var(--r)}
+.apple-mult{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--win)}
+.apple-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:9px}
+.acell{aspect-ratio:1;border-radius:8px;background:linear-gradient(135deg,rgba(79,139,255,.08),rgba(153,85,255,.05));border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;font-size:20px}
+.acell:active{transform:scale(.88)}
+.acell.safe{background:linear-gradient(135deg,rgba(0,232,122,.12),rgba(0,232,122,.06));border-color:rgba(0,232,122,.28);animation:saR .22s ease}
+@keyframes saR{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.acell.bomb{background:linear-gradient(135deg,rgba(255,45,85,.12),rgba(255,45,85,.06));border-color:rgba(255,45,85,.28);animation:bmS .3s ease}
+@keyframes bmS{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.acell.disabled{pointer-events:none;opacity:.45}
+/* WHEEL */
+.whl-wrap{display:flex;flex-direction:column;align-items:center;gap:7px;padding:5px 0}
+.whl-canvas{border-radius:50%;border:2px solid var(--a);box-shadow:0 0 25px var(--glow)}
+.whl-res{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;text-align:center;min-height:26px;margin-top:2px}
+.wr-item{display:flex;align-items:center;justify-content:space-between;padding:4px 7px;background:var(--bg2);border:1px solid var(--b);border-radius:7px;font-size:9px;margin-bottom:3px}
+.wr-n{font-weight:700;display:flex;align-items:center;gap:4px}
+.wr-v{font-family:'JetBrains Mono',monospace;font-weight:700}
+.wr-v.w{color:var(--win)}
+.wr-v.l{color:var(--live)}
+/* PROFILE */
+.pitem{display:flex;align-items:center;justify-content:space-between;padding:9px 10px;background:var(--card);border:1px solid var(--b);border-radius:var(--r);margin-bottom:5px}
+.pl{font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;color:var(--t2)}
+.pv{font-size:11px;color:var(--t);font-family:'JetBrains Mono',monospace;font-weight:700}
+.btn-logout{width:100%;padding:10px;border-radius:var(--r2);background:rgba(255,45,85,.09);border:1.5px solid rgba(255,45,85,.2);color:var(--live);font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer;margin-top:3px;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-logout:active{transform:scale(.97)}
+#toast{position:fixed;top:62px;left:50%;transform:translateX(-50%) translateY(-9px);padding:7px 13px;border-radius:99px;font-size:10px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap;box-shadow:0 8px 22px rgba(0,0,0,.3);display:flex;align-items:center;gap:4px}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.ok{background:var(--win);color:#000}
+#toast.err{background:var(--live);color:#fff}
+#toast.info{background:var(--a);color:#fff}
+#toast.warn{background:var(--warn);color:#000}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div id="ob">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <!-- Step 1 -->
+  <div class="ob-step on" id="step1">
+    <div class="ob-logo"><i class="fa-solid fa-futbol"></i></div>
+    <div class="ob-title">Paris Mobile</div>
+    <div class="ob-sub">Créé par <strong>Christ Emmanuel</strong><br>pour s'amuser entre amis</div>
+    <div class="ob-tag">"Êtes-vous prêt à devenir le maître du jeu ?"</div>
+    <div class="ob-dots"><div class="od on"></div><div class="od"></div><div class="od"></div></div>
+    <button class="ob-btn" onclick="nextStep(2)"><i class="fa-solid fa-arrow-right"></i> Suivant</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="ob-step" id="step2">
+    <div class="ob-logo" style="width:56px;height:56px;font-size:26px;margin-bottom:12px"><i class="fa-solid fa-user-plus"></i></div>
+    <div class="ob-title" style="font-size:22px;margin-bottom:4px">Crée ton compte</div>
+    <div class="ob-sub" style="margin-bottom:14px">Rejoins tes amis sur Paris Mobile</div>
+    <div class="ob-dots" style="margin-bottom:14px"><div class="od"></div><div class="od on"></div><div class="od"></div></div>
+    <div class="auth-tabs">
+      <div class="at on" onclick="authTab('login',this)">Connexion</div>
+      <div class="at" onclick="authTab('register',this)">Inscription</div>
+    </div>
+    <div id="loginForm" style="width:100%">
+      <div class="af"><label class="al">Email</label><input class="ai" id="lEmail" type="email" placeholder="ton@email.com"></div>
+      <div class="af"><label class="al">Mot de passe</label><input class="ai" id="lPwd" type="password" placeholder="••••••••"></div>
+      <div class="auth-err" id="lErr"></div>
+      <button class="ob-btn" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</button>
+    </div>
+    <div id="regForm" style="display:none;width:100%">
+      <div class="af"><label class="al">Pseudo</label><input class="ai" id="rName" type="text" placeholder="MonPseudo"></div>
+      <div class="af"><label class="al">Email</label><input class="ai" id="rEmail" type="email" placeholder="ton@email.com"></div>
+      <div class="af"><label class="al">Mot de passe</label><input class="ai" id="rPwd" type="password" placeholder="6 caractères min."></div>
+      <div class="auth-err" id="rErr"></div>
+      <button class="ob-btn" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Créer mon compte</button>
+    </div>
+    <div class="adiv"><div class="adiv-l"></div><div class="adiv-t">OU</div><div class="adiv-l"></div></div>
+    <button class="gbtn" onclick="doGoogle()">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuer avec Google
+    </button>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="ob-step" id="step3">
+    <div class="ob-logo" style="width:56px;height:56px;font-size:26px;margin-bottom:12px"><i class="fa-solid fa-coins"></i></div>
+    <div class="ob-title" style="font-size:22px;margin-bottom:4px">Ton portefeuille</div>
+    <div class="ob-sub" style="margin-bottom:14px">Tu commences avec des FCFA virtuels !</div>
+    <div class="ob-dots" style="margin-bottom:14px"><div class="od"></div><div class="od"></div><div class="od on"></div></div>
+    <div class="ob-wallet">
+      <div class="ow-lbl">Solde de bienvenue</div>
+      <div class="ow-amt">1 000</div>
+      <div class="ow-sub"><i class="fa-solid fa-coins"></i> FCFA Virtuels · Mise min. 90 FCFA</div>
+    </div>
+    <button class="ob-btn" onclick="startApp()"><i class="fa-solid fa-rocket"></i> Commencer à jouer !</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="tb-l">
+      <div class="tb-logo"><i class="fa-solid fa-futbol"></i></div>
+      <div class="tb-name">Paris Mobile</div>
+    </div>
+    <div class="tb-r">
+      <div class="cp"><i class="fa-solid fa-coins" style="font-size:9px"></i><span id="topCoins">1,000</span></div>
+      <div class="tbtn" id="themeBtn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></div>
+      <div class="avb" id="avatarBtn" onclick="openProfile()">?</div>
+    </div>
+  </div>
+
+  <div class="scroll" id="mainScroll">
+    <!-- HOME -->
+    <div class="sec on" id="sec-home">
+      <div class="hero">
+        <div class="hero-g">Bienvenue</div>
+        <div class="hero-n">Salut <span id="heroName">Champion</span> !</div>
+        <div class="hstats">
+          <div class="hs"><div class="hs-v" id="sLive">—</div><div class="hs-l">Live</div></div>
+          <div class="hs"><div class="hs-v" id="sToday">—</div><div class="hs-l">Matchs</div></div>
+          <div class="hs"><div class="hs-v" id="sOnline">—</div><div class="hs-l">En ligne</div></div>
+        </div>
+      </div>
+      <div class="ticker">
+        <i class="fa-solid fa-circle-dot"></i>
+        <div class="ticker-txt" id="tickerTxt">Bienvenue sur Paris Mobile 2.0 !</div>
+      </div>
+      <div class="ftabs">
+        <div class="ftab on" onclick="setFilter('all',this)"><i class="fa-solid fa-list"></i> Tous</div>
+        <div class="ftab" onclick="setFilter('live',this)"><i class="fa-solid fa-circle" style="color:var(--live);font-size:7px"></i> Live</div>
+        <div class="ftab" onclick="setFilter('scheduled',this)"><i class="fa-regular fa-clock"></i> À venir</div>
+        <div class="ftab" onclick="setFilter('finished',this)"><i class="fa-solid fa-check"></i> Terminés</div>
+      </div>
+      <div class="ph"><div class="ph-t">Matchs du Jour</div><div class="ph-a" onclick="loadMatches()"><i class="fa-solid fa-rotate"></i> Refresh</div></div>
+      <div id="matchContainer"></div>
+    </div>
+
+    <!-- PARIS -->
+    <div class="sec" id="sec-paris">
+      <div class="slip-hdr">
+        <div class="slip-ico"><i class="fa-solid fa-crosshairs"></i></div>
+        <div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px">Betslip</div><div style="font-size:9px;color:var(--t2)">Tes pronostics</div></div>
+        <div class="slip-cnt" id="slipCount">0</div>
+      </div>
+      <div id="slipItems"></div>
+      <div id="placePanel" style="display:none">
+        <div class="pbox">
+          <div class="pb-l">Mise (FCFA Virtuels)</div>
+          <div class="stake-row"><input class="stake-inp" type="number" id="stakeInput" value="90" min="90"><div class="stake-u"><i class="fa-solid fa-coins"></i></div></div>
+          <div class="qss">
+            <div class="qs" onclick="setStake(90)">90</div>
+            <div class="qs" onclick="setStake(500)">500</div>
+            <div class="qs" onclick="setStake(1000)">1K</div>
+            <div class="qs" onclick="setStake(2000)">2K</div>
+          </div>
+          <div class="pot"><div class="pot-l">Gain potentiel</div><div class="pot-v" id="potWin">0</div></div>
+          <button class="btn-main" onclick="placeBet()"><i class="fa-solid fa-check-circle"></i> Valider le pari</button>
+        </div>
+      </div>
+      <div id="emptySlip" class="empty">
+        <i class="fa-regular fa-clipboard"></i>
+        <div class="empty-t">Betslip vide</div>
+        <div class="empty-s">Sélectionne des cotes sur l'accueil</div>
+      </div>
+    </div>
+
+    <!-- CLASSEMENT -->
+    <div class="sec" id="sec-rank">
+      <div class="rank-hero">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;display:flex;align-items:center;gap:7px;justify-content:center"><i class="fa-solid fa-trophy" style="color:var(--coins)"></i> Classement</div>
+        <div style="font-size:9px;color:var(--t2);margin-top:3px">Temps réel · Firebase</div>
+      </div>
+      <div class="podium" id="podiumEl"></div>
+      <div class="ph"><div class="ph-t">Activité récente</div></div>
+      <div class="feed" id="feedEl"></div>
+      <div class="ph"><div class="ph-t">Top joueurs</div></div>
+      <div class="rank-list" id="rankListEl"></div>
+    </div>
+
+    <!-- JEUX -->
+    <div class="sec" id="sec-games">
+      <div class="hero" style="margin-bottom:10px">
+        <div class="hero-g">Mini-Jeux</div>
+        <div class="hero-n">Joue & <span>Gagne</span></div>
+      </div>
+      <div class="ph"><div class="ph-t">Choisir un jeu</div></div>
+      <div class="games-grid">
+        <div class="gtile" style="--tg:linear-gradient(135deg,#ff2d55,#ff7a3d)" onclick="openGame('aviator')">
+          <div class="gt-on"><i class="fa-solid fa-circle" style="font-size:5px"></i><span id="avOn">0</span></div>
+          <i class="fa-solid fa-paper-plane gt-ico" style="color:#ff5577"></i>
+          <div class="gt-name">AVIATOR</div>
+          <div class="gt-desc">Cash out avant le crash</div>
+          <div class="gt-tag">Jusqu'à 100×</div>
+        </div>
+        <div class="gtile" style="--tg:linear-gradient(135deg,#00e87a,#00b8ff)" onclick="openGame('pair')">
+          <div class="gt-on"><i class="fa-solid fa-circle" style="font-size:5px"></i><span id="piOn">0</span></div>
+          <i class="fa-solid fa-scale-balanced gt-ico" style="color:#00e87a"></i>
+          <div class="gt-name">PAIR / IMPAIR</div>
+          <div class="gt-desc">Battle Teams !</div>
+          <div class="gt-tag">×2 · ×1.8 · ×5</div>
+        </div>
+        <div class="gtile" style="--tg:linear-gradient(135deg,#ffaa00,#ff2d55)" onclick="openGame('wheel')">
+          <div class="gt-on"><i class="fa-solid fa-circle" style="font-size:5px"></i><span id="wlOn">0</span></div>
+          <i class="fa-solid fa-dharmachakra gt-ico" style="color:#ffaa00"></i>
+          <div class="gt-name">ROUE</div>
+          <div class="gt-desc">Tourne et gagne</div>
+          <div class="gt-tag">Jusqu'à 10×</div>
+        </div>
+        <div class="gtile" style="--tg:linear-gradient(135deg,#9955ff,#4f8bff)" onclick="openGame('apple')">
+          <div class="gt-on"><i class="fa-solid fa-circle" style="font-size:5px"></i><span id="apOn">0</span></div>
+          <i class="fa-solid fa-apple-whole gt-ico" style="color:#00e87a"></i>
+          <div class="gt-name">APPLE FORTUNE</div>
+          <div class="gt-desc">Évite les bombes !</div>
+          <div class="gt-tag">Jusqu'à 20×</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHOP -->
+    <div class="sec" id="sec-shop">
+      <div class="shop-hero">
+        <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Ton solde</div>
+        <div class="shop-coins" id="shopCoins">1,000</div>
+        <div style="font-size:9px;color:var(--t2);margin-top:2px"><i class="fa-solid fa-coins" style="color:var(--coins)"></i> FCFA Virtuels</div>
+      </div>
+      <div class="ph"><div class="ph-t">Boutique</div></div>
+      <div class="shop-grid" id="shopGrid"></div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="sec" id="sec-about">
+      <div style="margin:12px;padding:16px;background:linear-gradient(135deg,#08122a,#080820);border:1px solid rgba(79,139,255,.1);border-radius:var(--r3);text-align:center">
+        <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin:0 auto 10px"><i class="fa-solid fa-futbol"></i></div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px">Paris Mobile</div>
+        <div style="font-size:9px;color:var(--t3);margin:3px 0 10px">Version 2.0 · Firebase · 2025</div>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid var(--b2);padding:5px 11px;border-radius:99px;font-size:9px;font-weight:700">Créé par <span style="color:var(--live)">Christ Emmanuel</span></div>
+      </div>
+      <div style="margin:0 12px 8px;background:var(--card);border:1px solid var(--b);border-radius:var(--r2);padding:11px">
+        <div style="font-size:10px;font-weight:700;color:var(--a);margin-bottom:6px;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-shield-halved"></i> Anti-Triche</div>
+        <p style="font-size:10px;color:var(--t2);line-height:1.7">Résultats générés côté serveur via Firebase. Aucun Math.random côté client. 100% équitable.</p>
+      </div>
+      <div style="margin:0 12px 16px;background:var(--card);border:1px solid var(--b);border-radius:var(--r2);padding:11px">
+        <div style="font-size:10px;font-weight:700;color:var(--live);margin-bottom:6px;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-triangle-exclamation"></i> Avertissement</div>
+        <p style="font-size:10px;color:var(--t2);line-height:1.7">Application de divertissement avec FCFA virtuels uniquement. Aucun argent réel.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="ni on" onclick="goTo('home',this)"><i class="fa-solid fa-house"></i><span>Accueil</span></div>
+    <div class="ni" onclick="goTo('paris',this)"><i class="fa-solid fa-crosshairs"></i><span>Paris</span><div class="ni-dot" id="navBadge"></div></div>
+    <div class="ni" onclick="goTo('rank',this)"><i class="fa-solid fa-trophy"></i><span>Top</span></div>
+    <div class="ni" onclick="goTo('games',this)"><i class="fa-solid fa-gamepad"></i><span>Jeux</span></div>
+    <div class="ni" onclick="goTo('shop',this)"><i class="fa-solid fa-store"></i><span>Shop</span></div>
+    <div class="ni" onclick="goTo('about',this)"><i class="fa-solid fa-circle-info"></i><span>Infos</span></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="mov" id="gameModal">
+  <div class="msheet">
+    <div class="mhdr"><div class="mhandle"></div><div class="mtitle" id="modalTitle">Jeu</div><div class="mclose" onclick="closeGame()"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="mbody" id="modalBody"></div>
+  </div>
+</div>
+<div class="mov" id="profileModal">
+  <div class="msheet">
+    <div class="mhdr"><div class="mhandle"></div><div class="mtitle">Mon Profil</div><div class="mclose" onclick="closeProfile()"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="mbody" id="profileBody"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,updateProfile}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import{getFirestore,doc,setDoc,getDoc,collection,onSnapshot,orderBy,query,limit,serverTimestamp,addDoc,updateDoc,increment}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const FB={apiKey:"AIzaSyA0JcKMl1MlYRsUriGW3eygvexxV8tsiUo",authDomain:"football-games-with-friends.firebaseapp.com",projectId:"football-games-with-friends",storageBucket:"football-games-with-friends.firebasestorage.app",messagingSenderId:"618585127557",appId:"1:618585127557:web:9e78690b8d9e7fd11f87ec"};
+const fbApp=initializeApp(FB);
+const auth=getAuth(fbApp);
+const db=getFirestore(fbApp);
+
+let currentUser=null,coins=1000,betslip=[],allMatches=[],currentFilter='all',activeMarkets={},lastBetTimes={},inventory={},isDark=true;
+let wheelAngle=0,wheelSpin=false,avInt=null,avData={},avHist=[],avPts=[];
+let appleData={},piChoice=null,piHist=[],piLB=[],wheelRecent=[],activityFeed=[];
+
+const RAPID_KEY='b328290a23msha1c0af8985c0d4dp157d16jsnd4734b24618e';
+const BET_CD=30000;
+const MARKETS={'1X2':{l:'Résultat',o:['1','N','2']},'DC':{l:'Double Chance',o:['1N','12','N2']},'BTTS':{l:'Les 2 marquent',o:['Oui','Non']},'OU25':{l:'+/- 2.5',o:['+2.5','-2.5']},'OU35':{l:'+/- 3.5',o:['+3.5','-3.5']},'EX':{l:'Score exact',o:['0-0','1-0','0-1','1-1','2-0','2-1','3-0','Autre']}};
+const SHOP=[{id:'boost2',icon:'fa-bolt',n:'Boost ×2',d:'Double les gains du prochain pari',p:500},{id:'insurance',icon:'fa-shield-halved',n:'Assurance',d:'50% remboursé si perdu',p:800},{id:'freebet',icon:'fa-gift',n:'Free Bet',d:'Un pari sans mise',p:1500},{id:'pack1k',icon:'fa-coins',n:'Pack +1K',d:'1000 FCFA offerts',p:0,free:true},{id:'pack3k',icon:'fa-sack-dollar',n:'Pack +3K',d:'3000 FCFA (une seule fois)',p:0,free:true,used:false},{id:'vip',icon:'fa-crown',n:'Badge VIP',d:'Statut champion affiché',p:2000}];
+const WSEG=[{l:'×2',c:'#00e87a',m:2},{l:'0',c:'#ff2d55',m:0},{l:'×1.5',c:'#ffaa00',m:1.5},{l:'0',c:'#ff2d55',m:0},{l:'×5',c:'#4f8bff',m:5},{l:'0',c:'#ff2d55',m:0},{l:'×1.2',c:'#9955ff',m:1.2},{l:'×10',c:'#ffd700',m:10}];
+
+window.nextStep=function(n){document.querySelectorAll('.ob-step').forEach(s=>s.classList.remove('on'));document.getElementById('step'+n).classList.add('on');};
+window.authTab=function(tab,el){document.querySelectorAll('.at').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('loginForm').style.display=tab==='login'?'block':'none';document.getElementById('regForm').style.display=tab==='register'?'block':'none';};
+
+window.doLogin=async function(){
+  const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPwd').value,err=document.getElementById('lErr');
+  err.textContent='';if(!e||!p){err.textContent='Remplis tous les champs';return;}
+  try{const c=await signInWithEmailAndPassword(auth,e,p);currentUser=c.user;await loadUser(c.user);nextStep(3);}
+  catch(ex){err.textContent=ex.code==='auth/invalid-credential'?'Email ou mot de passe incorrect':ex.message;}
+};
+
+window.doRegister=async function(){
+  const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPwd').value,err=document.getElementById('rErr');
+  err.textContent='';if(!n||!e||!p){err.textContent='Remplis tous les champs';return;}
+  if(p.length<6){err.textContent='Mot de passe : 6 caractères minimum';return;}
+  try{
+    const c=await createUserWithEmailAndPassword(auth,e,p);
+    await updateProfile(c.user,{displayName:n});currentUser=c.user;
+    await setDoc(doc(db,'users',c.user.uid),{name:n,coins:1000,wins:0,losses:0,bets:0,joinedAt:serverTimestamp(),lastSeen:serverTimestamp()});
+    coins=1000;nextStep(3);
+  }catch(ex){err.textContent=ex.code==='auth/email-already-in-use'?'Email déjà utilisé':ex.message;}
+};
+
+window.doGoogle=async function(){
+  try{const r=await signInWithPopup(auth,new GoogleAuthProvider());currentUser=r.user;await loadUser(r.user);nextStep(3);}
+  catch{toast('Connexion Google échouée','err');}
+};
+
+window.startApp=function(){
+  document.getElementById('ob').style.display='none';
+  document.getElementById('app').classList.add('on');
+  initApp();
+};
+
+async function loadUser(u){
+  try{const s=await getDoc(doc(db,'users',u.uid));if(s.exists()){coins=s.data().coins??1000;}
+  else{await setDoc(doc(db,'users',u.uid),{name:u.displayName||u.email.split('@')[0],coins:1000,wins:0,losses:0,bets:0,joinedAt:serverTimestamp(),lastSeen:serverTimestamp()});coins=1000;}}
+  catch(e){console.warn(e);}
+}
+
+async function saveUser(extra={}){
+  if(!currentUser)return;
+  try{await updateDoc(doc(db,'users',currentUser.uid),{coins,...extra,lastSeen:serverTimestamp()});}
+  catch{try{await setDoc(doc(db,'users',currentUser.uid),{coins,...extra,lastSeen:serverTimestamp()},{merge:true});}catch{}}
+}
+
+async function getUserField(f,def=0){try{const s=await getDoc(doc(db,'users',currentUser.uid));return s.exists()?(s.data()[f]??def):def;}catch{return def;}}
+
+function initApp(){
+  const name=currentUser?.displayName||currentUser?.email?.split('@')[0]||'Champion';
+  setEl('heroName',name);document.getElementById('avatarBtn').textContent=name.charAt(0).toUpperCase();
+  updateCoins();renderShop();listenRanking();listenActivity();loadMatches();
+}
+
+async function logActivity(msg,amount,type){try{await addDoc(collection(db,'activity'),{msg,amount,type,ts:serverTimestamp(),uid:currentUser?.uid});}catch{}}
+
+function listenActivity(){
+  onSnapshot(query(collection(db,'activity'),orderBy('ts','desc'),limit(15)),snap=>{
+    activityFeed=snap.docs.map(d=>({id:d.id,...d.data()}));renderFeed();updateTicker();
+  });
+}
+
+function renderFeed(){
+  const el=document.getElementById('feedEl');if(!el)return;
+  if(!activityFeed.length){el.innerHTML='<div style="text-align:center;font-size:9px;color:var(--t3);padding:8px">Aucune activité récente</div>';return;}
+  el.innerHTML=activityFeed.slice(0,6).map(a=>`<div class="fi"><div class="fi-av">${(a.msg||'?').charAt(0).toUpperCase()}</div><div class="fi-txt">${a.msg}</div><div class="fi-amt ${a.type==='win'?'w':'l'}">${a.type==='win'?'+':'-'}${(a.amount||0).toLocaleString()}</div></div>`).join('');
+}
+
+function updateTicker(){const el=document.getElementById('tickerTxt');if(!el)return;el.textContent=activityFeed.map(a=>a.msg).join('   ·   ')||'Bienvenue sur Paris Mobile 2.0 !';}
+
+function listenRanking(){
+  onSnapshot(query(collection(db,'users'),orderBy('coins','desc'),limit(20)),snap=>{
+    const p=snap.docs.map(d=>({id:d.id,...d.data()}));renderRanking(p);setEl('sOnline',p.length);
+  });
+}
+
+function renderRanking(players){
+  if(!players.length)return;
+  const top3=players.slice(0,3),order=[top3[1],top3[0],top3[2]].filter(Boolean),medals=['🥈','🥇','🥉'];
+  const pEl=document.getElementById('podiumEl');
+  if(pEl)pEl.innerHTML=order.map((p,i)=>`<div class="pod"><div class="pod-av">${(p.name||'?').charAt(0)}</div><div style="font-size:14px">${medals[i]}</div><div class="pod-name">${p.name||'?'}</div><div class="pod-coins">${(p.coins||0).toLocaleString()}</div></div>`).join('');
+  const rEl=document.getElementById('rankListEl');
+  if(rEl)rEl.innerHTML=players.map((p,i)=>`<div class="ri ${p.id===currentUser?.uid?'me':''}"><div class="ri-num">${i+1}</div><div class="ri-av">${(p.name||'?').charAt(0)}</div><div class="ri-info"><div class="ri-name">${p.name||'?'}${p.id===currentUser?.uid?' <span style="font-size:8px;color:var(--a)">(Moi)</span>':''}</div><div class="ri-sub">${p.wins||0} gagnés · ${p.bets||0} paris</div></div><div class="ri-score">${(p.coins||0).toLocaleString()}</div></div>`).join('');
+}
+
+async function apiFetch(path){
+  const url=`https://free-api-live-football-data.p.rapidapi.com/${path}`;
+  const proxies=[u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`];
+  for(const fn of proxies){try{const r=await fetch(fn(url),{headers:{'x-rapidapi-key':RAPID_KEY,'x-rapidapi-host':'free-api-live-football-data.p.rapidapi.com','Content-Type':'application/json'}});if(r.ok)return await r.json();}catch{}}
+  throw new Error('API failed');
+}
+
+window.loadMatches=async function(){
+  showSkel();
+  try{
+    const data=await apiFetch('football-get-all-live-matches');
+    if(data?.response?.length){
+      allMatches=data.response.map(m=>({id:m.fixture?.id||Math.random(),homeTeam:{name:m.teams?.home?.name||'Equipe A',crest:m.teams?.home?.logo||''},awayTeam:{name:m.teams?.away?.name||'Equipe B',crest:m.teams?.away?.logo||''},status:['1H','2H'].includes(m.fixture?.status?.short)?'IN_PLAY':m.fixture?.status?.short==='FT'?'FINISHED':'SCHEDULED',score:{fullTime:{home:m.goals?.home,away:m.goals?.away}},competition:{name:m.league?.name||'Football'},utcDate:m.fixture?.date||new Date().toISOString()}));
+      const live=allMatches.filter(m=>m.status==='IN_PLAY');
+      setEl('sLive',live.length);setEl('sToday',allMatches.length);
+      toast(`${allMatches.length} matchs chargés`,'ok');
+    }else throw new Error('No data');
+  }catch{
+    allMatches=fallback();setEl('sLive',allMatches.filter(m=>m.status==='IN_PLAY').length);setEl('sToday',allMatches.length);
+  }
+  renderMatchList();
+};
+
+function fallback(){
+  const n=Date.now();
+  return[
+    mk(1001,'PSG','https://media.api-sports.io/football/teams/85.png','Marseille','https://media.api-sports.io/football/teams/81.png','IN_PLAY',2,1,'Ligue 1',n),
+    mk(1002,'Real Madrid','https://media.api-sports.io/football/teams/541.png','Barcelona','https://media.api-sports.io/football/teams/529.png','SCHEDULED',null,null,'La Liga',n+3600000),
+    mk(1003,'Man City','https://media.api-sports.io/football/teams/50.png','Arsenal','https://media.api-sports.io/football/teams/42.png','SCHEDULED',null,null,'Premier League',n+7200000),
+    mk(1004,'Bayern','https://media.api-sports.io/football/teams/157.png','Dortmund','https://media.api-sports.io/football/teams/165.png','FINISHED',3,1,'Bundesliga',n-3600000),
+    mk(1005,'Juventus','https://media.api-sports.io/football/teams/496.png','Inter','https://media.api-sports.io/football/teams/505.png','IN_PLAY',1,1,'Serie A',n-1200000),
+    mk(1006,'Chelsea','https://media.api-sports.io/football/teams/49.png','Liverpool','https://media.api-sports.io/football/teams/40.png','SCHEDULED',null,null,'PL',n+5400000),
+  ];
+}
+function mk(id,hn,hc,an,ac,st,hs,as,co,t){return{id,homeTeam:{name:hn,crest:hc},awayTeam:{name:an,crest:ac},status:st,score:{fullTime:{home:hs,away:as}},competition:{name:co},utcDate:new Date(t).toISOString()};}
+
+function showSkel(){document.getElementById('matchContainer').innerHTML=[1,2,3].map(()=>`<div style="margin:0 12px 8px;background:var(--card);border:1px solid var(--b);border-radius:var(--r2);padding:11px"><div class="sk" style="width:35%;height:9px;margin-bottom:10px"></div><div style="display:flex;gap:6px;align-items:center;margin-bottom:10px"><div class="sk" style="width:26px;height:26px;border-radius:50%"></div><div style="flex:1"><div class="sk" style="width:50%;height:9px"></div></div><div class="sk" style="width:40px;height:18px;border-radius:5px"></div><div style="flex:1;text-align:right"><div class="sk" style="width:50%;height:9px;margin-left:auto"></div></div><div class="sk" style="width:26px;height:26px;border-radius:50%"></div></div><div style="display:flex;gap:4px">${[0,1,2].map(()=>`<div class="sk" style="flex:1;height:34px;border-radius:7px"></div>`).join('')}</div></div>`).join('');}
+
+window.setFilter=function(f,el){currentFilter=f;document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));el.classList.add('on');renderMatchList();};
+
+function getFiltered(){if(currentFilter==='live')return allMatches.filter(m=>['IN_PLAY','PAUSED'].includes(m.status));if(currentFilter==='scheduled')return allMatches.filter(m=>m.status==='SCHEDULED');if(currentFilter==='finished')return allMatches.filter(m=>m.status==='FINISHED');return allMatches;}
+
+function genOdds(m){const s=m.id%100,h=+(1.5+(s%30)/20).toFixed(2),a=+(1.5+((s*7)%30)/20).toFixed(2),n=+(2.8+(s%18)/10).toFixed(2);return{'1X2':[h,n,a],'DC':[+(h*.55).toFixed(2),+(Math.min(h,a)*.65).toFixed(2),+(a*.55).toFixed(2)],'BTTS':[+(1.6+(s%20)/25).toFixed(2),+(1.9+(s%15)/25).toFixed(2)],'OU25':[+(1.7+(s%22)/30).toFixed(2),+(1.95+(s%18)/30).toFixed(2)],'OU35':[+(2.1+(s%25)/35).toFixed(2),+(1.65+(s%20)/30).toFixed(2)],'EX':[7.5,5.5,6,5,8,6.5,9,2.8]};}
+
+function buildMC(m){
+  const isL=['IN_PLAY','PAUSED'].includes(m.status),isF=m.status==='FINISHED';
+  const now=Date.now(),onCD=lastBetTimes[m.id]&&(now-lastBetTimes[m.id])<BET_CD,cdL=onCD?Math.ceil((BET_CD-(now-lastBetTimes[m.id]))/1000):0;
+  if(!activeMarkets[m.id])activeMarkets[m.id]='1X2';
+  const mkt=activeMarkets[m.id],odds=genOdds(m)[mkt],opts=MARKETS[mkt].o,sel=betslip.find(b=>b.matchId===m.id);
+  const tB=isL?`<div class="badge bl"><span class="ldot"></span> LIVE</div>`:isF?`<div class="badge bf">FT</div>`:`<div class="badge bs">${fmtT(m.utcDate)}</div>`;
+  const sA=(isL||isF)&&m.score?.fullTime?.home!==null?`<div class="sbox"><div class="score ${isL?'live':''}">${m.score.fullTime.home} — ${m.score.fullTime.away}</div></div>`:`<div class="sbox"><div class="vs">VS</div></div>`;
+  const pills=Object.keys(MARKETS).map(k=>`<div class="mkt ${mkt===k?'on':''}" onclick="switchMkt(${m.id},'${k}')">${MARKETS[k].l}</div>`).join('');
+  const oH=isF?`<div style="text-align:center;font-size:9px;color:var(--t3);padding:3px">Match terminé</div>`:`<div class="odds">${opts.map((o,i)=>`<div class="ob ${sel&&sel.pIdx===i&&sel.mkt===mkt?'sel':''}" onclick="selectOdd(${m.id},${i},'${o.replace(/'/g,"\\'")}',${(odds[i]||1.01).toFixed(2)},'${esc(m.homeTeam.name)} vs ${esc(m.awayTeam.name)}','${mkt}')"><span class="ol">${o}</span><span class="ov">${(odds[i]||1.01).toFixed(2)}</span></div>`).join('')}</div>`;
+  return`<div class="mc ${isL?'live':''}" id="mc${m.id}"><div class="mc-bar"></div>${onCD?`<div class="cd"><i class="fa-regular fa-clock"></i> ${cdL}s</div>`:''}<div class="mc-in"><div class="mc-top"><div class="mc-comp">${m.competition?.name||'Football'}</div>${tB}</div><div class="mc-teams"><div class="team home"><div class="crest"><img src="${m.homeTeam.crest||''}" onerror="this.style.display='none'" loading="lazy" alt=""></div><div class="tname">${m.homeTeam.name}</div></div>${sA}<div class="team away"><div class="crest"><img src="${m.awayTeam.crest||''}" onerror="this.style.display='none'" loading="lazy" alt=""></div><div class="tname">${m.awayTeam.name}</div></div></div><div class="mkts">${pills}</div>${oH}</div></div>`;
+}
+
+function renderMatchList(){const ms=getFiltered().slice(0,15),c=document.getElementById('matchContainer');if(!c)return;if(!ms.length){c.innerHTML=`<div class="empty"><i class="fa-solid fa-futbol"></i><div class="empty-t">Aucun match</div><div class="empty-s">Essaie un autre filtre</div></div>`;return;}c.innerHTML=ms.map(buildMC).join('');}
+window.switchMkt=function(id,mkt){activeMarkets[id]=mkt;renderMatchList();};
+function fmtT(d){try{return new Date(d).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}catch{return'--:--';}}
+function esc(s){return s.replace(/'/g,"\\'");}
+
+window.selectOdd=function(matchId,pIdx,label,odds,matchName,mkt){
+  const now=Date.now();
+  if(lastBetTimes[matchId]&&(now-lastBetTimes[matchId])<BET_CD){toast(`Attends ${Math.ceil((BET_CD-(now-lastBetTimes[matchId]))/1000)}s`,'warn');return;}
+  const idx=betslip.findIndex(b=>b.matchId===matchId);
+  if(idx>=0){if(betslip[idx].pIdx===pIdx&&betslip[idx].mkt===mkt)betslip.splice(idx,1);else betslip[idx]={matchId,pIdx,label,odds,matchName,mkt};}
+  else{if(betslip.length>=10){toast('Max 10 sélections !','err');return;}betslip.push({matchId,pIdx,label,odds,matchName,mkt});}
+  renderMatchList();updateBadge();updatePot();
+};
+
+window.removeBet=function(i){betslip.splice(i,1);renderSlip();renderMatchList();updateBadge();};
+
+function renderSlip(){
+  const items=document.getElementById('slipItems'),empty=document.getElementById('emptySlip'),panel=document.getElementById('placePanel');
+  setEl('slipCount',betslip.length);
+  if(!betslip.length){if(items)items.innerHTML='';if(empty)empty.style.display='block';if(panel)panel.style.display='none';return;}
+  if(empty)empty.style.display='none';if(panel)panel.style.display='block';
+  if(items)items.innerHTML=betslip.map((b,i)=>`<div class="sitem"><div class="si-bar"></div><div class="si-info"><div class="si-m">${b.matchName}</div><div class="si-p">${MARKETS[b.mkt]?.l||b.mkt} · ${b.label}</div></div><div class="si-o">${b.odds.toFixed(2)}×</div><div class="si-del" onclick="removeBet(${i})"><i class="fa-solid fa-xmark"></i></div></div>`).join('');
+  updatePot();
+}
+
+function updatePot(){const s=parseInt(document.getElementById('stakeInput')?.value)||0,tot=betslip.reduce((a,b)=>a*b.odds,1);setEl('potWin',Math.round(s*tot).toLocaleString());}
+window.setStake=function(v){const i=document.getElementById('stakeInput');if(i){i.value=v;updatePot();}};
+
+window.placeBet=async function(){
+  const stake=parseInt(document.getElementById('stakeInput').value)||0;
+  if(stake<90){toast('Mise minimum : 90 FCFA','err');return;}
+  if(stake>coins){toast('Solde insuffisant !','err');return;}
+  if(!betslip.length){toast('Aucune sélection !','err');return;}
+  const now=Date.now(),tot=betslip.reduce((a,b)=>a*b.odds,1);
+  let mult=1;const hasFree=!!inventory.freebet,hasIns=!!inventory.insurance;
+  if(inventory.boost2){mult=2;delete inventory.boost2;toast('Boost ×2 activé !','info');}
+  if(hasFree)delete inventory.freebet;if(hasIns)delete inventory.insurance;
+  coins-=(hasFree?0:stake);betslip.forEach(b=>{lastBetTimes[b.matchId]=now;});
+  const winP=Math.max(.15,.60-betslip.length*.05),won=Math.random()<winP;
+  const name=currentUser?.displayName||'Quelqu\'un';
+  if(won){const gain=Math.round(stake*tot*mult);coins+=gain;toast(`GAGNÉ ! +${gain.toLocaleString()} FCFA`,'ok');await logActivity(`${name} a gagné ${gain.toLocaleString()} FCFA au paris`,gain,'win');await saveUser({wins:increment(1),bets:increment(1)});}
+  else{if(hasIns){const r=Math.round(stake*.5);coins+=r;toast(`Remboursé ${r} FCFA`,'info');}else toast(`Perdu ! -${stake.toLocaleString()} FCFA`,'err');await logActivity(`${name} a perdu ${stake.toLocaleString()} FCFA`,stake,'loss');await saveUser({losses:increment(1),bets:increment(1)});}
+  await saveUser({});betslip=[];renderSlip();renderMatchList();updateBadge();updateCoins();
+};
+
+function renderShop(){const g=document.getElementById('shopGrid');if(!g)return;g.innerHTML=SHOP.map((item,i)=>`<div class="si2" onclick="buyShop(${i})"><i class="fa-solid ${item.icon}"></i><div class="si2-n">${item.n}</div><div class="si2-d">${item.d}</div><div class="si2-p">${item.free?'GRATUIT':''+item.p.toLocaleString()}</div></div>`).join('');}
+window.buyShop=async function(i){const item=SHOP[i];if(item.free){if(item.used){toast('Déjà utilisé !','warn');return;}const bonus=item.id==='pack3k'?3000:1000;coins+=bonus;updateCoins();toast(`+${bonus} FCFA !`,'ok');SHOP[i].free=false;SHOP[i].used=true;SHOP[i].p=item.id==='pack3k'?5000:2000;renderShop();await saveUser({});return;}if(coins<item.p){toast('Solde insuffisant !','err');return;}coins-=item.p;inventory[item.id]=true;updateCoins();renderShop();toast(`${item.n} acheté !`,'ok');await saveUser({});};
+
+window.openGame=function(id){
+  const names={aviator:'Aviator',pair:'Pair ou Impair — Battle',wheel:'Roue de la Fortune',apple:'Apple of Fortune'};
+  setEl('modalTitle',names[id]);
+  const body=document.getElementById('modalBody');
+  if(id==='aviator')buildAviator(body);
+  else if(id==='pair')buildPair(body);
+  else if(id==='wheel')buildWheel(body);
+  else if(id==='apple')buildApple(body);
+  document.getElementById('gameModal').classList.add('on');
+};
+window.closeGame=function(){document.getElementById('gameModal').classList.remove('on');if(avInt){clearInterval(avInt);avInt=null;}};
+
+function buildAviator(body){
+  avData={running:false,mult:1,cashed:false,stake:0};avHist=[];avPts=[];
+  body.innerHTML=`<div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Joueurs présents</div><div class="pig" id="pig-av"></div><div class="av-disp"><canvas class="av-canvas" id="avC" width="300" height="70"></canvas><div class="av-mult safe" id="avM">1.00×</div><div class="av-st" id="avS">Entre ta mise et lance !</div></div><div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Historique</div><div class="av-hist" id="avH" style="margin-bottom:9px"></div><div class="gs-row"><input class="gs-inp" id="avStake" type="number" value="90" min="90"><div class="gs-u"><i class="fa-solid fa-coins"></i></div></div><div class="flx"><button class="btn-g" id="avStart" onclick="avStart()"><i class="fa-solid fa-paper-plane"></i> Lancer</button><button class="btn-r" id="avCash" onclick="avCash()" disabled><i class="fa-solid fa-hand"></i> Cash Out</button></div>`;
+}
+
+window.avStart=async function(){
+  const stake=parseInt(document.getElementById('avStake')?.value)||0;
+  if(stake<90){toast('Mise min 90 FCFA','err');return;}if(stake>coins){toast('Solde insuffisant !','err');return;}
+  coins-=stake;updateCoins();avData={running:true,mult:1,cashed:false,stake};avPts=[{x:0,y:1}];
+  const crashAt=1+Math.pow(Math.random(),.35)*12;
+  document.getElementById('avStart').disabled=true;document.getElementById('avCash').disabled=false;
+  setEl('avS','En vol ! Cash out vite !');let t=0;
+  avInt=setInterval(()=>{
+    t+=0.12;avData.mult=Math.pow(Math.E,t*.22);
+    const el=document.getElementById('avM');if(!el){clearInterval(avInt);return;}
+    el.className='av-mult '+(avData.mult<2?'safe':avData.mult<5?'warn':'hot');
+    el.textContent=avData.mult.toFixed(2)+'×';avPts.push({x:t,y:avData.mult});drawAvC();
+    if(avData.mult>=crashAt){clearInterval(avInt);avInt=null;if(!avData.cashed){el.className='av-mult crashed';el.textContent='CRASH!';setEl('avS',`Crashé à ${crashAt.toFixed(2)}× !`);toast(`Crash ! Perdu ${stake} FCFA`,'err');addAvH(crashAt);logActivity(`${currentUser?.displayName||'Quelqu\'un'} a perdu ${stake.toLocaleString()} FCFA (Aviator)`,stake,'loss');saveUser({losses:increment(1)});}const s=document.getElementById('avStart'),c=document.getElementById('avCash');if(s)s.disabled=false;if(c)c.disabled=true;}
+  },100);
+};
+
+window.avCash=async function(){
+  if(!avData.running||avData.cashed)return;avData.cashed=true;clearInterval(avInt);avInt=null;
+  const gain=Math.round(avData.stake*avData.mult);coins+=gain;updateCoins();
+  toast(`Cash out ${avData.mult.toFixed(2)}× ! +${gain} FCFA`,'ok');setEl('avS',`+${gain} FCFA`);addAvH(avData.mult);
+  await logActivity(`${currentUser?.displayName||'Quelqu\'un'} a gagné ${gain.toLocaleString()} FCFA (Aviator)`,gain,'win');
+  await saveUser({wins:increment(1)});const s=document.getElementById('avStart'),c=document.getElementById('avCash');if(s)s.disabled=false;if(c)c.disabled=true;
+};
+
+function addAvH(v){avHist.unshift(v);if(avHist.length>12)avHist.pop();const el=document.getElementById('avH');if(!el)return;el.innerHTML=avHist.map(h=>`<div class="avhp ${h<1.5?'lo':h<3?'mi':'hi'}">${h.toFixed(2)}×</div>`).join('');}
+
+function drawAvC(){const c=document.getElementById('avC');if(!c||avPts.length<2)return;const ctx=c.getContext('2d'),W=c.width,H=c.height;ctx.clearRect(0,0,W,H);const mx=avPts.at(-1).x||1,my=Math.max(avPts.at(-1).y,2);const g=ctx.createLinearGradient(0,0,W,0);g.addColorStop(0,'#4f8bff');g.addColorStop(1,avData.cashed?'#00e87a':'#ff2d55');ctx.beginPath();ctx.strokeStyle=g;ctx.lineWidth=2.5;avPts.forEach((p,i)=>{const x=(p.x/mx)*W*.95+5,y=H-(p.y/my)*(H-6)-2;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();ctx.lineTo((avPts.at(-1).x/mx)*W*.95+5,H);ctx.lineTo(5,H);ctx.closePath();const gf=ctx.createLinearGradient(0,0,0,H);gf.addColorStop(0,'rgba(79,139,255,.12)');gf.addColorStop(1,'transparent');ctx.fillStyle=gf;ctx.fill();}
+
+function buildPair(body){
+  piChoice=null;piHist=[];
+  body.innerHTML=`<div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Joueurs présents</div><div class="pig" id="pig-pair"></div><div class="pi-arena"><div class="pi-teams"><div class="pi-team" id="piA"><div class="pi-tn">Équipe A</div><div class="pi-ts" id="piSA">—</div></div><div class="pi-vs">VS</div><div class="pi-team" id="piB"><div class="pi-tn">Équipe B</div><div class="pi-ts" id="piSB">—</div></div></div><div class="pi-res wait" id="piRes">En attente de ta mise...</div><div class="pi-st" id="piSt">Choisis et mise pour lancer</div></div><div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Ta prédiction</div><div class="pi-choices"><div class="pic" id="pc-pair" onclick="piChoose('pair',this)"><span class="pc-i"><i class="fa-solid fa-equals" style="color:var(--win)"></i></span><div class="pc-n">PAIR</div><div class="pc-o">×2.00</div></div><div class="pic" id="pc-impair" onclick="piChoose('impair',this)"><span class="pc-i"><i class="fa-solid fa-not-equal" style="color:var(--warn)"></i></span><div class="pc-n">IMPAIR</div><div class="pc-o">×1.80</div></div><div class="pic" id="pc-nul" onclick="piChoose('nul',this)"><span class="pc-i"><i class="fa-solid fa-handshake" style="color:var(--a)"></i></span><div class="pc-n">NUL</div><div class="pc-o">×5.00</div></div></div><div class="gs-row"><input class="gs-inp" id="piStake" type="number" value="90" min="90"><div class="gs-u"><i class="fa-solid fa-coins"></i></div></div><button class="btn-main" id="piBtn" onclick="piPlay()" style="margin-bottom:9px"><i class="fa-solid fa-play"></i> Lancer la manche</button><div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Historique</div><div class="pi-hist" id="piHist" style="margin-bottom:9px"></div><div class="pi-lb"><div class="pi-lb-t"><i class="fa-solid fa-medal" style="color:var(--coins)"></i> Meilleurs gains session</div><div id="piLBEl"><div style="font-size:9px;color:var(--t3);text-align:center;padding:5px">Aucun gain encore</div></div></div>`;
+}
+
+window.piChoose=function(c,el){piChoice=c;document.querySelectorAll('.pic').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');};
+
+window.piPlay=async function(){
+  if(!piChoice){toast('Choisis une option !','warn');return;}
+  const stake=parseInt(document.getElementById('piStake')?.value)||0;
+  if(stake<90){toast('Mise min 90 FCFA','err');return;}if(stake>coins){toast('Solde insuffisant !','err');return;}
+  coins-=stake;updateCoins();document.getElementById('piBtn').disabled=true;
+  setEl('piSt','Génération du résultat...');setEl('piRes','');document.getElementById('piRes').className='pi-res wait';
+  await new Promise(r=>setTimeout(r,1500));
+  const sA=Math.floor(Math.random()*5),sB=Math.floor(Math.random()*5),tot=sA+sB;
+  let result,label;if(sA===sB){result='nul';label='MATCH NUL';}else if(tot%2===0){result='pair';label='PAIR ('+tot+')';}else{result='impair';label='IMPAIR ('+tot+')';}
+  setEl('piSA',sA);setEl('piSB',sB);
+  const rEl=document.getElementById('piRes');rEl.textContent=label;rEl.className='pi-res '+result;
+  const tA=document.getElementById('piA'),tB=document.getElementById('piB');
+  if(tA)tA.className='pi-team '+(sA>sB?'winning':sA<sB?'losing':'');
+  if(tB)tB.className='pi-team '+(sB>sA?'winning':sB<sA?'losing':'');
+  const ODDS={pair:2.0,impair:1.8,nul:5.0};const won=result===piChoice;const gain=won?Math.round(stake*ODDS[piChoice]):0;
+  setEl('piSt',won?'Bonne prédiction !':'Mauvaise prédiction...');
+  piHist.unshift({result,sA,sB});if(piHist.length>10)piHist.pop();
+  const hEl=document.getElementById('piHist');if(hEl)hEl.innerHTML=piHist.map(h=>`<div class="pihp ${h.result}">${h.sA}-${h.sB}</div>`).join('');
+  const cEl=document.getElementById('pc-'+piChoice);if(cEl){cEl.classList.remove('sel');cEl.classList.add(won?'correct':'wrong');setTimeout(()=>{cEl.classList.remove('correct','wrong');},1500);}
+  const name=currentUser?.displayName||'Quelqu\'un';
+  if(won){coins+=gain;updateCoins();toast(`Gagné ! +${gain} FCFA`,'ok');await logActivity(`${name} a gagné ${gain.toLocaleString()} FCFA (Pair/Impair)`,gain,'win');await saveUser({wins:increment(1),bets:increment(1)});piLB.unshift({name,gain});if(piLB.length>5)piLB.pop();const lbEl=document.getElementById('piLBEl');if(lbEl)lbEl.innerHTML=piLB.map(e=>`<div class="pi-lb-i"><div class="pi-lb-av">${e.name.charAt(0)}</div><div class="pi-lb-n">${e.name}</div><div class="pi-lb-g">+${e.gain.toLocaleString()}</div></div>`).join('');}
+  else{toast(`Perdu ! -${stake} FCFA`,'err');await logActivity(`${name} a perdu ${stake.toLocaleString()} FCFA (Pair/Impair)`,stake,'loss');await saveUser({losses:increment(1),bets:increment(1)});}
+  await saveUser({});piChoice=null;document.querySelectorAll('.pic').forEach(c=>c.classList.remove('sel'));document.getElementById('piBtn').disabled=false;
+};
+
+function buildWheel(body){
+  body.innerHTML=`<div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Joueurs présents</div><div class="pig" id="pig-whl"></div><div class="gs-row"><input class="gs-inp" id="wStake" type="number" value="90" min="90"><div class="gs-u"><i class="fa-solid fa-coins"></i></div></div><div class="whl-wrap"><canvas class="whl-canvas" id="wC" width="230" height="230"></canvas><div><i class="fa-solid fa-caret-down" style="color:var(--live);font-size:16px"></i></div><button class="btn-main" id="wBtn" onclick="spinWheel()" style="padding:9px 22px"><i class="fa-solid fa-rotate"></i> Tourner !</button><div class="whl-res" id="wR"></div></div><div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin:9px 0 5px">Gains récents</div><div id="wRec"></div>`;
+  requestAnimationFrame(()=>drawWheel(wheelAngle));renderWRec();
+}
+
+function drawWheel(angle){const c=document.getElementById('wC');if(!c)return;const ctx=c.getContext('2d'),cx=115,cy=115,R=110,n=WSEG.length,arc=(2*Math.PI)/n;ctx.clearRect(0,0,230,230);WSEG.forEach((seg,i)=>{const s=angle+i*arc-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,s,s+arc);ctx.closePath();ctx.fillStyle=seg.c;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1.5;ctx.stroke();ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='rgba(0,0,0,.9)';ctx.font='bold 10px Syne,sans-serif';ctx.fillText(seg.l,R-8,4);ctx.restore();});ctx.beginPath();ctx.arc(cx,cy,14,0,2*Math.PI);ctx.fillStyle='#020209';ctx.fill();ctx.strokeStyle='var(--a)';ctx.lineWidth=2;ctx.stroke();}
+
+window.spinWheel=async function(){
+  if(wheelSpin)return;const stake=parseInt(document.getElementById('wStake')?.value)||0;
+  if(stake<90){toast('Mise min 90 FCFA','err');return;}if(stake>coins){toast('Solde insuffisant !','err');return;}
+  coins-=stake;updateCoins();wheelSpin=true;const btn=document.getElementById('wBtn');if(btn)btn.disabled=true;setEl('wR','');
+  const tot=(6+Math.random()*6)*2*Math.PI,dur=4200,start=performance.now(),sa=wheelAngle;
+  function anim(now){const el=now-start,t=Math.min(el/dur,1),ease=1-Math.pow(1-t,4);wheelAngle=sa+tot*ease;drawWheel(wheelAngle);if(t<1){requestAnimationFrame(anim);return;}
+    const n=WSEG.length,arc=(2*Math.PI)/n,norm=((wheelAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI),idx=Math.floor(((2*Math.PI-norm+arc/2)%(2*Math.PI))/arc)%n,seg=WSEG[idx],gain=Math.round(stake*seg.m);
+    coins+=gain;updateCoins();const rEl=document.getElementById('wR');if(rEl){rEl.style.color=seg.m===0?'var(--live)':'var(--win)';rEl.textContent=seg.m===0?'PERDU !':` ${seg.l} — +${gain} FCFA`;}
+    const name=currentUser?.displayName||'Quelqu\'un';
+    if(seg.m===0){toast(`Perdu ! -${stake} FCFA`,'err');logActivity(`${name} a perdu ${stake.toLocaleString()} FCFA (Roue)`,stake,'loss');saveUser({losses:increment(1)});wheelRecent.unshift({name,amount:-stake,t:'l'});}
+    else{toast(`${seg.l} ! +${gain} FCFA`,'ok');logActivity(`${name} a gagné ${gain.toLocaleString()} FCFA (Roue)`,gain,'win');saveUser({wins:increment(1)});wheelRecent.unshift({name,amount:gain,t:'w'});}
+    if(wheelRecent.length>6)wheelRecent.pop();saveUser({});wheelSpin=false;if(btn)btn.disabled=false;renderWRec();
+  }
+  requestAnimationFrame(anim);
+};
+
+function renderWRec(){const el=document.getElementById('wRec');if(!el)return;if(!wheelRecent.length){el.innerHTML='<div style="font-size:9px;color:var(--t3);text-align:center;padding:5px">Aucun résultat encore</div>';return;}el.innerHTML=wheelRecent.map(w=>`<div class="wr-item"><div class="wr-n"><div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#4f8bff,#9955ff);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">${w.name.charAt(0)}</div>${w.name}</div><div class="wr-v ${w.t}">${w.t==='w'?'+':''}${Math.abs(w.amount).toLocaleString()}</div></div>`).join('');}
+
+function buildApple(body){
+  appleData={inGame:false,stake:0,bombs:[],revealed:[],mult:1};
+  body.innerHTML=`<div style="font-size:8px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">Joueurs présents</div><div class="pig" id="pig-ap"></div><div class="apple-disp"><div><div style="font-size:8px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Multiplicateur</div><div class="apple-mult" id="apM">1.00×</div></div><div style="text-align:right"><div style="font-size:8px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Statut</div><div style="font-size:10px;font-weight:700;color:var(--t2)" id="apInfo">Lance une partie</div></div></div><div class="apple-grid" id="apGrid"></div><div class="gs-row"><input class="gs-inp" id="apStake" type="number" value="90" min="90"><div class="gs-u"><i class="fa-solid fa-coins"></i></div></div><div class="flx"><button class="btn-g" onclick="apStart()"><i class="fa-solid fa-play"></i> Nouvelle partie</button><button class="btn-r" id="apCash" onclick="apCash()" style="display:none"><i class="fa-solid fa-hand-holding-dollar"></i> Encaisser</button></div>`;
+  const g=document.getElementById('apGrid');if(g)g.innerHTML=Array(25).fill(0).map((_,i)=>`<div class="acell disabled" id="ap${i}">🎁</div>`).join('');
+}
+
+window.apStart=async function(){
+  const stake=parseInt(document.getElementById('apStake')?.value)||0;
+  if(stake<90){toast('Mise min 90 FCFA','err');return;}if(stake>coins){toast('Solde insuffisant !','err');return;}
+  coins-=stake;updateCoins();appleData={inGame:true,stake,bombs:[],revealed:[],mult:1};
+  while(appleData.bombs.length<5){const r=Math.floor(Math.random()*25);if(!appleData.bombs.includes(r))appleData.bombs.push(r);}
+  setEl('apM','1.00×');setEl('apInfo','Évite les bombes !');
+  const cash=document.getElementById('apCash');if(cash)cash.style.display='flex';
+  for(let i=0;i<25;i++){const c=document.getElementById(`ap${i}`);if(c){c.className='acell';c.textContent='🎁';c.onclick=()=>apReveal(i);}}
+};
+
+window.apReveal=async function(i){
+  if(!appleData.inGame||appleData.revealed.includes(i))return;
+  appleData.revealed.push(i);const c=document.getElementById(`ap${i}`);
+  if(appleData.bombs.includes(i)){
+    if(c){c.className='acell bomb';c.textContent='💣';}
+    appleData.inGame=false;
+    appleData.bombs.forEach(b=>{const bc=document.getElementById(`ap${b}`);if(bc){bc.className='acell bomb';bc.textContent='💣';}});
+    for(let j=0;j<25;j++){const jc=document.getElementById(`ap${j}`);if(jc)jc.classList.add('disabled');}
+    const cash=document.getElementById('apCash');if(cash)cash.style.display='none';
+    toast(`Boom ! Perdu ${appleData.stake} FCFA`,'err');setEl('apInfo',`Perdu ! -${appleData.stake} FCFA`);
+    await logActivity(`${currentUser?.displayName||'Quelqu\'un'} a perdu ${appleData.stake.toLocaleString()} FCFA (Apple)`,appleData.stake,'loss');
+    await saveUser({losses:increment(1)});
+  }else{
+    if(c){c.className='acell safe';c.textContent='🍎';}
+    appleData.mult=+(1+appleData.revealed.length*.3).toFixed(2);
+    setEl('apM',appleData.mult+'×');setEl('apInfo',`${appleData.revealed.length} pommes · ×${appleData.mult}`);
+  }
+};
+
+window.apCash=async function(){
+  if(!appleData.inGame)return;appleData.inGame=false;
+  const gain=Math.round(appleData.stake*appleData.mult);coins+=gain;updateCoins();
+  for(let j=0;j<25;j++){const jc=document.getElementById(`ap${j}`);if(jc)jc.classList.add('disabled');}
+  const cash=document.getElementById('apCash');if(cash)cash.style.display='none';
+  toast(`Encaissé ! +${gain} FCFA`,'ok');setEl('apInfo',`Gagné ${gain} FCFA !`);
+  await logActivity(`${currentUser?.displayName||'Quelqu\'un'} a gagné ${gain.toLocaleString()} FCFA (Apple)`,gain,'win');
+  await saveUser({wins:increment(1)});await saveUser({});
+};
+
+function updateCoins(){const f=coins.toLocaleString();setEl('topCoins',f);setEl('shopCoins',f);}
+function updateBadge(){const el=document.getElementById('navBadge');if(!el)return;if(betslip.length){el.style.display='flex';el.textContent=betslip.length;}else el.style.display='none';setEl('slipCount',betslip.length);}
+function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+
+window.goTo=function(sec,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));document.getElementById('sec-'+sec).classList.add('on');el.classList.add('on');document.getElementById('mainScroll').scrollTop=0;if(sec==='paris')renderSlip();if(sec==='shop'){renderShop();updateCoins();}};
+
+window.openProfile=function(){const name=currentUser?.displayName||currentUser?.email?.split('@')[0]||'?';document.getElementById('profileBody').innerHTML=`<div class="pitem"><div class="pl"><i class="fa-solid fa-user"></i> Pseudo</div><div class="pv">${name}</div></div><div class="pitem"><div class="pl"><i class="fa-solid fa-envelope"></i> Email</div><div class="pv" style="font-size:10px">${currentUser?.email||'—'}</div></div><div class="pitem"><div class="pl"><i class="fa-solid fa-coins"></i> Solde</div><div class="pv">${coins.toLocaleString()} FCFA</div></div><button class="btn-logout" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</button>`;document.getElementById('profileModal').classList.add('on');};
+window.closeProfile=function(){document.getElementById('profileModal').classList.remove('on');};
+
+window.doLogout=async function(){await signOut(auth);currentUser=null;coins=1000;betslip=[];document.getElementById('app').classList.remove('on');document.getElementById('ob').style.display='flex';closeProfile();toast('À bientôt !','info');nextStep(1);};
+window.toggleTheme=function(){isDark=!isDark;document.documentElement.setAttribute('data-theme',isDark?'dark':'light');const btn=document.querySelector('#themeBtn i');if(btn)btn.className=isDark?'fa-solid fa-moon':'fa-solid fa-sun';};
+document.getElementById('stakeInput')?.addEventListener('input',updatePot);
+setInterval(()=>{if(Object.values(lastBetTimes).some(t=>(Date.now()-t)<BET_CD))renderMatchList();},1000);
+window.toast=function(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`on ${type}`;clearTimeout(el._t);el._t=setTimeout(()=>el.className='',2800);};
+window.loadMatches=window.loadMatches;
+</script>
+</body>
+</html>
